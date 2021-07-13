@@ -13,12 +13,12 @@ export default {
       locale: false,
       defaultOpenAll: false,
     },
-    title: '高途资料库',
+    title: 'test',
     pwa: false,
     iconfontUrl: '',
-    domainName: 'gaotu100',
-    projectId: 'gaotu-fe-material',
-    projectName: '高途资料库',
+    domainName: 'test',
+    projectId: 'test',
+    projectName: 'test',
 } as LayoutSettings & {
     pwa: boolean;
     domainName: string;

@@ -5,25 +5,12 @@ import React from 'react';
 import {BasicLayoutProps, Settings as LayoutSettings} from '@ant-design/pro-layout';
 import {notification} from 'antd';
 import dayjs from 'dayjs';
-import Cookie from 'js-cookie';
 import {UseRequestProvider} from 'ahooks';
 import 'dayjs/locale/zh-cn';
-import {isSlave} from '@/utils/utils';
-
-import {getUser} from '@/services/user';
-import RightContent from '@/components/RightContent';
 import defaultSettings from '../config/defaultSettings';
-
 
 // 设置dayjs中文设置
 dayjs.locale('zh-cn');
-
-
-// @ts-ignore
-if (CASTOKEN && NODE_ENV === 'development') {
-    // @ts-ignore
-    Cookie.set('_const_d_jsession_id_', CASTOKEN);
-}
 
 export function onRouteChange({matchedRoutes}) {
     if (matchedRoutes.length) {
@@ -40,26 +27,11 @@ export function onRouteChange({matchedRoutes}) {
 // 项目初始化全局状态
 // 具体配置可参考：https://umijs.org/zh-CN/plugins/plugin-initial-state
 export async function getInitialState(): Promise<{
-    currentUser: API.CurrentUser | null;
+    currentUser: null;
     settings?: LayoutSettings;
     hasPermissions?: string[];
     businessLine: number;
 }> {
-    try {
-        const response = await getUser();
-        const [userRes, businessRes] = response || [];
-        const hasPermissions
-            = userRes?.data?.currentRole
-                ?.hasPermissions?.map((item: API.PermissionItem) => item.tag) || [];
-        return {
-            currentUser: userRes?.data || null,
-            businessLine: businessRes?.data?.businessLine ?? null,
-            hasPermissions,
-            settings: defaultSettings,
-        };
-    }
-    catch (error) {
-    }
     return {
         settings: defaultSettings,
         currentUser: null,
@@ -75,18 +47,11 @@ export const layout = ({
     initialState: {settings?: LayoutSettings};
 }): BasicLayoutProps => {
     const layouts = {
-        rightContentRender: () => <RightContent />,
+        rightContentRender: () => null,
         disableContentMargin: false,
         footerRender: false,
-        onError(error) {
-        },
         ...initialState?.settings,
     } as BasicLayoutProps;
-    if (isSlave) {
-        layouts.headerRender = false;
-        layouts.menuHeaderRender = false;
-        layouts.menuRender = false;
-    }
     return layouts;
 };
 
@@ -143,6 +108,7 @@ const errorHandler = (error: {response: Response; info: {errorMessage: string}})
     if (response?.status) {
         // @ts-ignore
         const errorText = codeMessage[response.status] || response.statusText;
+        // @ts-ignore
         const {status, url} = response;
         notification.error({
             message: `请求错误 ${status}: ${url}`,

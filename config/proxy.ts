@@ -6,7 +6,7 @@ export default {
   dev: {},
   yapi: {
     '/material': {
-      target: 'https://api.123.com/mock/2545',
+      target: 'https://api.12313.com/mock/2545',
       changeOrigin: true,
       pathRewrite: { '^': '' },
     },

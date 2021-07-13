@@ -2,6 +2,12 @@ import {defineConfig} from 'umi';
 import path from 'path';
 import defaultSettings from './defaultSettings';
 import proxy from './proxy';
+// import gctjson from '../gct.env.json';
+
+const CubePlugin = require('@gaotu-fe/webpack-cube-plugin');
+const AntdDayjsWebpackPlugin = require('antd-dayjs-webpack-plugin');
+const SentryPlugin = require('webpack-sentry-plugin');
+const version = require('../package.json').version;
 // const {projectId, projectName} = defaultSettings;
 const {REACT_APP_ENV, APP_TYPE, NODE_ENV, SERVE_ENV} = process.env;
 
@@ -28,14 +34,16 @@ export default defineConfig({
     define: {
         APP_TYPE: APP_TYPE || '',
         REACT_APP_ENV: REACT_APP_ENV || '',
+        // CASTOKEN: CASTOKEN || '',
         NODE_ENV: NODE_ENV,
         SERVE_ENV: SERVE_ENV,
     },
     routes: [
         {
             path: '/',
+            name: '首页',
             component: './index'
-        },
+        }
     ],
     theme: {
         // ...darkTheme,
@@ -59,4 +67,26 @@ export default defineConfig({
             output: path.resolve(__dirname, '/cache/.mfsu')
         }
     } : false,
+    chainWebpack(memo) {
+        // memo.plugin('dayjsPlugin').use(AntdDayjsWebpackPlugin);
+        // 高途魔方
+        if (REACT_APP_ENV === 'test') {
+            memo.plugin('gaotu-cube').use(CubePlugin, [{
+                name: 'gt-material',
+                projectId: '9282',
+                enable: true,
+            }]);
+        }
+        if (REACT_APP_ENV === 'prod') {
+            memo.plugin('sentry').use(SentryPlugin, [{
+                organization: 'gaptu-web',
+                project: 'material-pc',
+                include: './material',
+                baseSentryURL: 'https://sentry.baijia.com/',
+                release: `${version}-${new Date().getTime()}`,
+                deleteAfterCompile: true,
+                apiKey: '8bba13f9b24742deacb20a83d7adc2964fb97c3fe093448cbbdc6f7445251de1',
+            }]);
+        }
+    }
 });
