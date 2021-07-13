@@ -13,20 +13,11 @@
     "build:test": "cross-env REACT_APP_ENV=test umi build",
     "build:beta": "cross-env REACT_APP_ENV=beta umi build",
     "build:prod": "cross-env REACT_APP_ENV=prod umi build",
-    "lint": "npx mew ./src --rule",
-    "lint:fix": "npx mew fix ./src",
     "postinstall": "umi generate tmp",
     "prettier": "prettier --write '**/*.{js,jsx,tsx,ts,less,md,json}'",
     "test": "umi-test",
     "test:coverage": "umi-test --coverage",
     "analyze": "cross-env ANALYZE=1 umi dev"
-  },
-  "lint-staged": {
-    "*.{js,ts,less}": "npm run lint"
-  },
-  "gitHooks": {
-    "pre-commit": "lint-staged",
-    "pre-push": ""
   },
   "dependencies": {
     "@ant-design/icons": "^4.6.2",
@@ -64,8 +55,6 @@
     "express": "^4.17.1",
     "get-cas-token": "^0.2.4",
     "habo": "^2.1.2",
-    "lint-staged": "^10.5.4",
-    "mew": "^1.6.3",
     "mockjs": "^1.0.1",
     "prettier": "^2.0.1",
     "react": "^17.0.2",
