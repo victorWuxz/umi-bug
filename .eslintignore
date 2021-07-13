@@ -1,0 +1,8 @@
+/config
+/material
+/mock
+/src/assets
+/node_modules
+.eslintrc.js
+.history
+gct.env.json

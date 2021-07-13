@@ -1,0 +1,106 @@
+.cardItem {
+    :global {
+        .ant-card-body {
+            padding: 12px !important;
+            height: 127px !important;
+        }
+
+        .ant-card-actions {
+            height: 36px;
+            align-items: center;
+        }
+
+        ul {
+            padding: 0 12px !important;
+            display: flex;
+            overflow: hidden;
+        }
+
+        li {
+            border: none !important;
+            color: #26f !important;
+            width: auto !important;
+            margin-right: 12px;
+            font-weight: 400;
+
+            div {
+                font-size: 12px !important;
+            }
+        }
+    }
+}
+
+.info {
+    display: flex;
+}
+
+.content {
+    flex: 1;
+    padding-left: 10px;
+    padding-right: 14px;
+}
+
+.image {
+    width: 68px;
+    height: 68px;
+    flex-shrink: 0;
+    cursor: pointer;
+    border: 1px solid #f5f5f5;
+    border-radius: 3px;
+    padding: 0;
+}
+
+.readOnly {
+    padding: 4px;
+    margin-right: 8px;
+    border-radius: 2px;
+    background: #eeaf00;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 400;
+}
+
+.title {
+    word-break: break-all;
+    /* stylelint-disable value-no-vendor-prefix */
+    display: -webkit-box;
+    /* stylelint-disable property-no-vendor-prefix */
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.number {
+    font-size: 12px;
+    font-weight: 400;
+    color: #0009;
+    line-height: 20px;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    word-break: break-all;
+}
+
+.statistics {
+    font-size: 12px;
+    font-weight: 400;
+    color: #0009;
+    line-height: 20px;
+    margin-top: 10px;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    word-break: break-all;
+
+    & > span {
+        margin-right: 17px;
+
+        span {
+            margin-right: 6px;
+            color: #0000003d;
+        }
+    }
+}
