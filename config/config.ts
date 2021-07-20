@@ -3,13 +3,7 @@ import {defineConfig} from 'umi';
 import path from 'path';
 import defaultSettings from './defaultSettings';
 import proxy from './proxy';
-// import gctjson from '../gct.env.json';
 
-const CubePlugin = require('@gaotu-fe/webpack-cube-plugin');
-const AntdDayjsWebpackPlugin = require('antd-dayjs-webpack-plugin');
-const SentryPlugin = require('webpack-sentry-plugin');
-const version = require('../package.json').version;
-// const {projectId, projectName} = defaultSettings;
 const {REACT_APP_ENV, APP_TYPE, NODE_ENV, SERVE_ENV} = process.env;
 
 // 项目配置，具体配置请参考：https://umijs.org/zh-CN/config
@@ -44,7 +38,17 @@ export default defineConfig({
             path: '/',
             name: '首页',
             component: './index'
-        }
+        },
+        {
+            path: '/test',
+            name: '测试',
+            component: './test'
+        },
+        {
+            path: '/test2',
+            name: '测试2',
+            component: './test2'
+        },
     ],
     theme: {
         // ...darkTheme,
@@ -64,30 +68,33 @@ export default defineConfig({
     proxy: proxy[SERVE_ENV || 'dev'],
     webpack5: NODE_ENV === 'development' ? {} : false,
     mfsu: NODE_ENV === 'development' ? {
+        chunks: ['vendors', 'umi'],
         development: {
             output: path.resolve(__dirname, '/cache/.mfsu')
         }
     } : false,
+    chunks: ['vendors', 'umi'],
     chainWebpack(memo) {
         // memo.plugin('dayjsPlugin').use(AntdDayjsWebpackPlugin);
         // 高途魔方
-        if (REACT_APP_ENV === 'test') {
-            memo.plugin('gaotu-cube').use(CubePlugin, [{
-                name: 'gt-material',
-                projectId: '9282',
-                enable: true,
-            }]);
-        }
-        if (REACT_APP_ENV === 'prod') {
-            memo.plugin('sentry').use(SentryPlugin, [{
-                organization: 'gaptu-web',
-                project: 'material-pc',
-                include: './material',
-                baseSentryURL: 'https://sentry.baijia.com/',
-                release: `${version}-${new Date().getTime()}`,
-                deleteAfterCompile: true,
-                apiKey: '8bba13f9b24742deacb20a83d7adc2964fb97c3fe093448cbbdc6f7445251de1',
-            }]);
-        }
+        memo.merge({
+            optimization: {
+                splitChunks: {
+                    chunks: 'all',
+                    minSize: 30000,
+                    minChunks: 1,
+                    automaticNameDelimiter: '.',
+                    cacheGroups: {
+                        vendor: {
+                            name: 'vendors',
+                            test({resource}) {
+                                return /[\\/]node_modules[\\/]/.test(resource);
+                            },
+                            priority: 10,
+                        },
+                    },
+                },
+            }
+        });
     }
 });
